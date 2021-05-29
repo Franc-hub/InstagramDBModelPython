@@ -17,10 +17,10 @@ class Person(Base):
 
 class Address(Base):
     __tablename__ = 'address'
-    # Here we define columns for the table address.
+    # Here we define columns for the table address.saxxassx
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
+    strxAXXxX_name = Column(String(250))
     street_number = Column(String(250))
     post_code = Column(String(250), nullable=False)
     person_id = Column(Integer, ForeignKey('person.id'))
