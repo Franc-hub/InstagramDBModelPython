@@ -1,6 +1,6 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String , Boolean , Table 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -8,48 +8,74 @@ from eralchemy import render_er
 
 Base = declarative_base()
 
-class User(Base):
-    __tablename__ = 'user'
+class Student(Base):
+    __tablename__ = 'student'
     id = Column(Integer, primary_key=True)
-    user_name = Column(String(250), nullable=False)
-    first_name = Column(String(25))
-    last_name = Column(String(25))
-    description = Column (String(250))
-    email = Column (String(50), nullable=False)
-
-class Followe(Base) :
-    __tablename__ = 'follower'
-    id =  id = Column(Integer, primary_key=True)
-    user_from_id= Column(Integer, ForeignKey('user.id'))
-    usert_to_id = Column(Integer, ForeignKey('user.id'))
-    user=relationship(User)
+    full_name = Column(String(120), unique=False, nullable=False)
+    email = Column(String(120), unique=True, nullable=False)
+    password = Column(String(80), unique=False, nullable=False)
+    is_active = Column(Boolean(), unique=False, nullable=False)
+    promo = Column(Boolean(), unique=False, nullable=False)
+    img = Column(String(250), unique=True, nullable=False)
+    school_id = Column(Integer, ForeignKey('school.id'))
+    school = relationship("School", back_populates="student")
+    teacher_id = Column(Integer, ForeignKey('teacher.id'))
+    teacher = relationship("Teacher", back_populates="student")
 
 
-class Comment(Base):
-    __tablename__ = 'comment'
+class School(Base):
+    __tablename__ = 'school'
     id = Column(Integer, primary_key=True)
-    comment_text = Column(String(250))
-    user_id= Column(Integer, ForeignKey('user.id'))
-    user=relationship(User)
-    post_id = Column(Integer, ForeignKey('post.id'))
-   
+    name = Column(String(120), unique=False, nullable=False)
+    img = Column(String(250), unique=True, nullable=False)
+    student_id = Column(Integer, ForeignKey('student.id'))
+    students = relationship("student", back_populates="school")
 
-class Post(Base):
-    __tablename__ = 'post'
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('user.id'))
-    user=relationship(User)
+
     
-class Media(Base):
-    __tablename__ = 'media'
+class Teacher(Base):
+    __tablename__ = 'teacher'
     id = Column(Integer, primary_key=True)
-    url = Column(String(250))
-    post_id = Column(Integer, ForeignKey('post.id'))
-    post= relationship(Post)
-    
+    full_name = Column(String(120), unique=False, nullable=False)
+    email = Column(String(120), unique=True, nullable=False)
+    password = Column(String(80), unique=False, nullable=False)
+    type_of_teacher = Column(String(80), unique=False, nullable=False)
+    linkedin = Column(String(80), unique=False, nullable=False)
+    is_active = Column(Boolean(), unique=False, nullable=False)
+    promo = Column(Boolean(), unique=False, nullable=False)
+    img = Column(String(250), unique=True, nullable=False)
+    student_id = Column(Integer, ForeignKey('student.id'))
+    student = relationship("Student", back_populates="student")
+    school_id = Column(Integer, ForeignKey('school.id'))
+    school = relationship("School", back_populates="teacher")
 
-    def to_dict(self):
-        return {}
+
+class Review(Base):
+    __tablename__ = 'review'
+    id = Column(Integer, primary_key=True)
+    dynamsim = Column(Integer())
+    pasion = Column(Integer())
+    practises_example = Column(Integer())
+    near = Column(Integer())
+    # date_teacher = Column(DateTime, default=datetime.datetime.utcnow)
+    more_info = Column(String(500), unique=False, nullable=True)
+    gif = Column(String(50), unique=False, nullable=True)
+
+
+
+class Review_teacher(Base):
+    __tablename__ = 'review_teacher'
+    id = Column(Integer, primary_key=True)
+
+
+
+class Review_school(Base):
+    __tablename__ = 'review_school'
+    id = Column(Integer, primary_key=True)
+
+
+def to_dict(self):
+    return {}
 
 ## Draw from SQLAlchemy base
 try:
